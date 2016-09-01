@@ -3,7 +3,7 @@
 
 int main()
 {
-        while(true)
+        while(1)
         {
                 printf("Hello World");
                 sleep(3);
