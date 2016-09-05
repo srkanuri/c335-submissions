@@ -17,9 +17,16 @@ void push(int value){
   top=elem;
 }
 
+void throw_error(int code){
+  switch(code){
+  case 1: printf("rpn: %s\n""stack empty");
+  default: printf("rpn: %s\n""unknown error");
+  }
+}
+
 void pop(){
   if(top == NULL){
-    printf("%s\n""Stack Empty");
+    throw_error(1);
     return;
   }
   int value = top->val;
@@ -33,8 +40,6 @@ void peek(){
     return;
   }
   printf("%d\n", top->val);
-  //printf("%d\n",top->next);
-  //printf("%d\n",top);
 }
 
 void display(){
@@ -44,21 +49,26 @@ void display(){
   }
 }
 
+void flush(){
+  while(top!=NULL){
+    pop();
+  }
+}
+
 
 int main(){
   int inp;
   int val1,val2;
   while((inp = getchar()) != EOF){
-    int errflag = 0;
-    //printf("Input: %d \t %c\n",inp, inp);
     switch(inp){
-    case '+': if(top != NULL){val1 = top->val;} pop(); if(top != NULL){val2=top->val; errflag=1;} pop(); if(errflag==1){push(val1+val2);} break;
-    case '-': if(top != NULL){val1 = top->val;} pop(); if(top != NULL){val2=top->val; errflag=1;} pop(); if(errflag==1){push(val1-val2);} break;
-    case '*': if(top != NULL){val1 = top->val;} pop(); if(top != NULL){val2=top->val; errflag=1;} pop(); if(errflag==1){push(val1*val2);} break;
-    case '/': if(top != NULL){val1 = top->val;} pop(); if(top != NULL){val2=top->val; errflag=1;} pop(); if(errflag==1){push(val1/val2);} break;
+    case '+': if(top != NULL && top->next != NULL){val1 = top->val; pop(); val2=top->val; pop(); push(val1+val2);} else {throw_error(1);} break;
+    case '-': if(top != NULL && top->next != NULL){val1 = top->val; pop(); val2=top->val; pop(); push(val1+val2);} else {throw_error(1);} break;
+    case '*': if(top != NULL && top->next != NULL){val1 = top->val; pop(); val2=top->val; pop(); push(val1+val2);} else {throw_error(1);} break;
+    case '/': if(top != NULL && top->next != NULL){val1 = top->val; pop(); val2=top->val; pop(); push(val1+val2);} else {throw_error(1);} break;
     case 'p': peek(); break;
     case 'f': display(); break;
     case 'q': exit(0);
+    case 'c': flush(); break;
     case '\n': break;
     case '\t': break;
     case ' ': break;
