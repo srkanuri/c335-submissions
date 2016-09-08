@@ -1,17 +1,35 @@
-//
-// poly.c
-//
 #include <stdio.h>
-
+/***************************************************************
+ * poly.c
+ *
+ * This program is used to fillup memory. It uses a union type
+ * and loads the values. poly.c loads the values and dump.c
+ * prints out the values. dump_memory is an external function
+ * from dump.c which is also used in poly.c
+ *
+ * Authors: Srikanth Kanuri (srkanuri) 
+ *          Samuel Eleftheri (selefthe)
+ * Date Created: 09/02/2016
+ * Last Modified by: Srikanth Kanuri
+ * Date Last Modified: 09/08/2016
+ * Assignment: Lab2
+ * Part of: poly
+ ***************************************************************/
 typedef union {
   unsigned char ccc[8];
   short sss[4];
   int iii[2];
   float fff[2];
   double ddd;
-} Poly;
+} Poly; //Union type of name Poly
 
-extern void dump_memory(void *, int);
+extern void dump_memory(void *, int); //extenal function from dump.c used in the current file.
+
+// Function Name: main
+// Description: main function to start the program an load the memory using 
+// the union structure. Once loaded, we use the dump_memory function
+// to print out all the values.
+// Return Type: int
 
  int main() {
    int i;

@@ -1,0 +1,91 @@
+ ***************************************************************
+ * Team: Srikanth Kanuri (srkanuri)
+ *       Samuel Eleftheri (selefthe)
+ * Date Created: 09/02/2016
+ * Assignment: Lab2
+ ***************************************************************
+  **************          LAB2 REPORT         *****************
+ ***************************************************************
+
+In this lab, we worked on creating:
+1. A program to count the words, lines and alphabets in an input.
+2. A program to dump memory and learn how to debug the program execution
+
+Results:
+The first program was an exact implementation of word count function. Through this program,
+I learned how to use the Makefile and relate all the dependant files to compile successfully.
+
+The result of the 1st program is:
+> ./mywc < haiku
+ 3 5 32
+
+Through the second program, we learned how to used gdb to view the variable values during program execution.
+We got to learn about union type and how functions in a program can be used in a other programs(extern).
+We also learned about the different printf formats.  
+
+The result of the 2nd program is:
+> ./poly
+address         char hexCh short      integer        float   doubleFloat
++0x7ffdf5b94c60    a 0x61 +25185 +1684234849 +1.677800e+22 +8.540883e+194
++0x7ffdf5b94c61    b 0x62 +25442 +1701077858 +6.740830e+22 +2.128094e-104
++0x7ffdf5b94c62    c 0x63 +25699 +1717920867 +2.708184e+23 +9.432442e-101
++0x7ffdf5b94c63    d 0x64 +25956 +1734763876 +1.088015e+24 +6.359040e-96
++0x7ffdf5b94c64    e 0x65 +26213 +1751606885 +4.371022e+24 +4.321324e-91
++0x7ffdf5b94c65    f 0x66 +26470  +711485286 +2.064161e-13 +2.932955e-86
++0x7ffdf5b94c66    g 0x67 +26727  +724199527 +6.054102e-13 +1.988289e-81
++0x7ffdf5b94c67    h 0x68 +10856  +741026408 +2.432410e-12 +1.346395e-76
++0x7ffdf5b94c68    * 0x2a +11050  +757869354 +9.786652e-12 +9.159988e-72
++0x7ffdf5b94c69    + 0x2b +11307  +774712363 +3.937487e-11 -1.281956e-153
++0x7ffdf5b94c6a    , 0x2c +11564  +791555372 +1.584126e-10 +2.462619e-209
++0x7ffdf5b94c6b    - 0x2d +11821  +808398381 +6.373025e-10 -2.520414e-149
++0x7ffdf5b94c6c    . 0x2e +12078  +825241390 +2.563819e-09 +2.597738e-209
++0x7ffdf5b94c6d    / 0x2f +12335 -1607389137 -1.500843e-19 -1.652057e-144
++0x7ffdf5b94c6e    0 0x30 +12592  +346042672 +1.617527e-26 +2.749827e-209
++0x7ffdf5b94c6f    1 0x31 -24527 -1592483791 -5.035636e-19 -1.082897e-139
++0x7ffdf5b94c70    ? 0xa0  +5280  +346100896 +1.626498e-26 +2.901917e-209
++0x7ffdf5b94c71    ? 0x14 -24300 -1575706348 -2.014301e-18 +3.381172e+05
++0x7ffdf5b94c72    ? 0xa1  +5281  +346166433 +1.636596e-26 +1.900281e-307
++0x7ffdf5b94c73    ? 0x14 -24044 -1558928876 -8.057417e-18 +3.535380e-310
++0x7ffdf5b94c74    ? 0xa2  +5282  +346231970 +1.646693e-26 +1.381008e-312
++0x7ffdf5b94c75    ? 0x14 -23788 +1091871508 +9.289814e+00 +8.589937e+09
++0x7ffdf5b94c76    ? 0xa3  +5283    +4265123 +5.976710e-39 +2.002566e-307
++0x7ffdf5b94c77    ? 0x14 +16660      +16660 +2.334563e-41 +3.585324e-310
++0x7ffdf5b94c78    A 0x41    +65         +65 +9.108440e-44 +1.400517e-312
++0x7ffdf5b94c79    ? 0x00     +0 +1107296256 +3.200000e+01 -5.075885e-116
++0x7ffdf5b94c7a    ? 0x00     +0    +4325376 +6.061143e-39 +2.497497e-257
++0x7ffdf5b94c7b    ? 0x00 +16896      +16896 +2.367634e-41 -9.139968e+303
++0x7ffdf5b94c7c    B 0x42    +66         +66 +9.248570e-44 +1.350647e+188
++0x7ffdf5b94c7d    ? 0x00     +0 -1476395008 -7.105427e-15 -7.901454e+11
++0x7ffdf5b94c7e    ? 0x00     +0  +178782208 +1.617781e-32 -4.117364e+249
++0x7ffdf5b94c7f    ? 0x00 -22528   -16078848 -1.843058e+38 -1.213771e-236
++0x7ffdf5b94c80    ? 0xa8  +2728 +1727990440 +6.022000e+23 +4.074557e+65
++0x7ffdf5b94c81    ? 0x0a   -246 -1033437430 -5.774906e+01 +1.295728e-191
++0x7ffdf5b94c82    ? 0xff +26367  -205363457 -3.080428e+31 +1.864149e-91
++0x7ffdf5b94c83    f 0x66 -15770 -1896627610 -6.009132e-30 +2.683534e+20
++0x7ffdf5b94c84    ? 0xc2  -3134 +1301214146 +2.997924e+08 +8.619200e+97
++0x7ffdf5b94c85    ? 0xf3 -28941  +407736051 +2.656780e-24 -1.205454e+286
++0x7ffdf5b94c86    ? 0x8e +19854  +756567438 +8.657420e-12 +5.471526e-145
++0x7ffdf5b94c87    M 0x4d  +6221 +1143806029 +6.923797e+02 +1.115336e-264
++0x7ffdf5b94c88    ? 0x18 +11544 +1413754136 +3.370281e+12 +3.141593e+00
++0x7ffdf5b94c89    - 0x2d +17453   -78363603 -1.102150e+36 -1.784028e-307
++0x7ffdf5b94c8a    D 0x44 +21572  +570119236 +1.703073e-18 +2.139174e+65
++0x7ffdf5b94c8b    T 0x54  -1196  +153221972 +1.949784e-33 -1.136336e-32
++0x7ffdf5b94c8c    ? 0xfb  +8699 +1074340347 +2.142699e+00 -1.215749e+259
++0x7ffdf5b94c8d    ! 0x21  +2337 -2143287007 -5.880747e-39 -5.682930e+298
++0x7ffdf5b94c8e    ? 0x09 +16393 +1300250633 +2.689600e+08          +nan
++0x7ffdf5b94c8f    @ 0x40 -32704 -1186103232 -1.959810e-04 +2.847385e-306
+
+Difficulties:
+While working on the first Makefile, there were issues since I did not follow the tab space.
+The make showed errors and then I realised the importance of tabs in make files
+
+While working on the Poly project with my team, we really wanted to understand all the print formats
+and we took some time away from the actual labwork, created a new program to print all formats and
+checked how each option was working. This gave us a good undestanding of the printf options.
+
+Learnings:
+There were several things we learnt in this lab about the tools for C development -
+1. Importance and Makefile and its utility while compiling large projects
+2. The importance of a tab in the Makefile
+3. The role of gdb in debugging a program
+4. Various printf options for printing data in the required format. 

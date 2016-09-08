@@ -1,5 +1,20 @@
 #include <stdio.h>
+/***************************************************************
+ * mywc.c
+ *
+ * Counts the alphabets, words and lines in the given input
+ *
+ * Authors: Srikanth Kanuri (srkanuri)
+ * Date Created: 09/02/2016
+ * Last Modified by: Srikanth Kanuri
+ * Date Last Modified: 09/08/2016
+ * Assignment: Lab2
+ * Part of: mywc
+ ***************************************************************/
 
+// Function Name: main
+// Description: Function to count the words, lines and alphabets
+// Return type: int
 int main()
 {
   int c;
@@ -14,5 +29,5 @@ int main()
       wordcnt++;
     }
   }
-  printf("%d %d %d",++linecnt,++wordcnt,++alphacnt);
+  printf(" %d %d %d\n",linecnt,wordcnt,alphacnt);
 }
