@@ -1,0 +1,14 @@
+***************************************************************
+ * Name: Srikanth Kanuri (srkanuri)
+ * Date Created: 09/14/2016
+ * Assignment: HW2
+ ***************************************************************
+  **************          LAB2 REPORT         *****************
+ ***************************************************************
+
+1. Address and size of global variable state            : Address (00012fe8), Size in Decimal (4 bytes)
+2. Address and size of global variable state_counter    : Address (00012fec), Size in Decimal (4 bytes) 
+3. Starting address and size of function stop_light()   : Address (00008af8), Size in Decimal (144 bytes)
+4. Starting address and size of function inc()          : Address (00008ba4), Size in Decimal (0 bytes with 'arm-none-eabi-nm' and 4 bytes with "arm-none-eabi-size t1.o")
+5. Largest function in the executable HW1.elf           : _malloc_r
+6. Overall size of the executable HW1.elf in bytes      : 12328 bytes
