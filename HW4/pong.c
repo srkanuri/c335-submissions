@@ -47,6 +47,9 @@
 #define PADDLE_THICKNESS 3
 #define BALL_DIM 3
 #define EVENT_LOOP_TIME 20
+#define XAXIS 0
+#define YAXIS 41
+#define ZAXIS 81
 
 rect_t left_paddle;
 rect_t right_paddle;
@@ -137,16 +140,63 @@ void pong_game(void) {
   }
 }
 
+void drawBarPos(int x,int y,int color){
+  uint16_t buf[ST7735_width];
+  int i = ST7735_height/2,j;
+  for(;i>ST7735_height/2-y/4 ;i--){
+    for(j=x;j<x+40;j++)
+      buf[j] = color;
+  //f3d_lcd_drawPixel(j, i,color);
+    ST7735_pushColor(buf,ST7735_width);
+  }
+}
+
+void drawBarNeg(int x,int y,int color){
+  uint16_t buf[ST7735_width];
+  int i = ST7735_height/2,j;
+  for(;i< ST7735_height/2+y/4 ;i++){
+    for(j=x;j<x+40;j++)
+      buf[j] = color;
+  //f3d_lcd_drawPixel(j, i,color);
+    ST7735_pushColor(buf,ST7735_width);
+  }
+}
+
+void plotValues(float data[]){
+  fillScreen(RED);
+  char str[40];
+  sprintf(str, "X:%.1f,Y:%.1f,Z:%.1f",data[0],data[1],data[2]);
+  if(data[0]<0)
+    drawBarNeg(XAXIS,abs((int)data[0]),BLACK);
+  else
+    drawBarPos(XAXIS,(int)data[0],BLACK);
+  
+  if(data[1]<0)
+    drawBarNeg(YAXIS,abs((int)data[1]),GREEN);
+  else
+    drawBarPos(YAXIS,(int)data[1],GREEN);
+  
+  if(data[2]<0)
+    drawBarNeg(ZAXIS,abs((int)data[2]),BLUE);
+  else
+    drawBarPos(ZAXIS,(int)data[2],BLUE);
+  
+    drawString(0,0,str,WHITE,RED);
+}
+
 /*Where the pong_game() is called the rectangels are initialized. */
 int c335_main( int argc, char *argv[] ) {
 
-  fillScreen(BLACK);
-  initRect(&left_paddle,0,ST7735_height/2-(PADDLE_HEIGHT/2),PADDLE_THICKNESS,PADDLE_HEIGHT,WHITE);
-  initRect(&right_paddle,ST7735_width-PADDLE_THICKNESS,ST7735_height/2-(PADDLE_HEIGHT/2),PADDLE_THICKNESS,PADDLE_HEIGHT,WHITE);
-  initRect(&ball,ST7735_width/2-(BALL_DIM/2),ST7735_height/2-(BALL_DIM/2),BALL_DIM,BALL_DIM,WHITE);
-
+  fillScreen(RED);
+  //initRect(&left_paddle,0,ST7735_height/2-(PADDLE_HEIGHT/2),PADDLE_THICKNESS,PADDLE_HEIGHT,WHITE);
+  //initRect(&right_paddle,ST7735_width-PADDLE_THICKNESS,ST7735_height/2-(PADDLE_HEIGHT/2),PADDLE_THICKNESS,PADDLE_HEIGHT,WHITE);
+  //initRect(&ball,ST7735_width/2-(BALL_DIM/2),ST7735_height/2-(BALL_DIM/2),BALL_DIM,BALL_DIM,WHITE);
+  SDL_Event event;
   while (1) {
-    pong_game();
+    //pong_game();
+    SDL_PollEvent(&event);
+    if(event.type == SDLK_q)
+      exit(0);
     Delay(EVENT_LOOP_TIME);
   }
 } 
