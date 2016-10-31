@@ -1,2 +1,4 @@
-# c335-submissions
-Submissions for CSCI-A593 Computer Structures
+# Fall2016-lab
+
+
+Please check the Wiki for errata on lab experiements.
