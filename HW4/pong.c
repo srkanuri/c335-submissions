@@ -57,6 +57,7 @@ rect_t ball;
 
 int ball_vx = 1;
 int ball_vy = 2;
+int new = 0;
 int fsize = 0;
 int pmode = 0;
 int cur_ptr = 0;
@@ -153,7 +154,7 @@ void event_loop(void) {
       paddle_left_move = -PADDLE_MOVE_INCREMENT; 
       break;
     case SDLK_n:
-      drawGyro();Delay(1000);
+      if(new){drawGyro();Delay(1000);}
       break;
     case SDLK_z:
       paddle_left_move = PADDLE_MOVE_INCREMENT; 
@@ -205,6 +206,7 @@ int c335_main( int argc, char *argv[] ) {
   char *mode;
   if(argc == 3){
     mode = argv[1];
+    new = 1;
     if (!strcmp(mode, "LANDSCAPE") || !strcmp(mode, "PORTRAIT")){
       if(!strcmp(mode, "LANDSCAPE"))
 	pmode = 1;
