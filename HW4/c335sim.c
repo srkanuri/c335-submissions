@@ -1,3 +1,38 @@
+/* c335sim.c --- 
+ * 
+ * Filename: c335sim.c
+ * Description: 
+ * Author: Bryce Himebaugh
+ * Maintainer: 
+ * Created: Mon Aug 11 10:50:08 2014
+ * Last-Updated: Mon Oct 31 22:20:00 2016
+ *           By: Srikanth Kanuri (srkanuri)
+ *     Update #: 0
+ * Keywords: 
+ * Compatibility: 
+ * 
+ */
+
+/* Commentary: 
+ * 
+ * 
+ * 
+ */
+
+/* Change log:
+ * 
+ * 
+ */
+
+/* Copyright (c) 2004-2007 The Trustees of Indiana University and 
+ * Indiana University Research and Technology Corporation.  
+ * 
+ * All rights reserved. 
+ * 
+ * Additional copyrights may follow 
+ */
+
+/* Code: */
 #include <stdio.h>
 #include <fcntl.h>
 #include <sys/stat.h>
@@ -67,9 +102,18 @@ int SDL_main(int argc, char *argv[])
 	    SDL_INIT_JOYSTICK);
 
   //Set up screen
-
-  init_screen(portrait);
-  // init_screen(landscape);
+  if(argc == 3){
+    //Added options for both Landscape and Portrait
+    char* mode = argv[1];
+    if(!strcmp(mode, "LANDSCAPE")){
+      init_screen(landscape);
+    }
+    if(!strcmp(mode, "PORTRAIT")){
+      init_screen(portrait);
+    }
+  }
+  else
+    init_screen(portrait);
 
   SDL_AddTimer(50, signal_handler, 0);
 
@@ -94,15 +138,21 @@ void ST7735_setAddrWindow(uint16_t xs, uint16_t ys,
   mady = (madctl >> 2) & 1;
   madx = ((madctl >> 1) & 1);
   madv = madctl & 1;
-  xoff = xs*zoom;
-  yoff = ys*zoom;
-
+  
   xindx = madx ? 0:w-1;
   yindx = mady ? 0:h-1;
-
-  destRect.x = xs*zoom;
-  destRect.y = ys*zoom;
-
+  
+  xoff = xs*zoom;
+  yoff = ys*zoom;
+  
+  //conditional flipping of values to change the orientation of rectangles
+  if(orientation == landscape){
+    destRect.x = ys*zoom;
+    destRect.y = xs*zoom;
+  }else{
+    destRect.x = xs*zoom;
+    destRect.y = ys*zoom;
+  }
   //  printf("set addr, %d %d %d %d\n", x0, y0, x1, y1);
 }
 

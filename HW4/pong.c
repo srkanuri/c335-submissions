@@ -5,8 +5,8 @@
  * Author: Bryce Himebaugh
  * Maintainer: 
  * Created: Mon Aug 11 10:50:08 2014
- * Last-Updated: 
- *           By: 
+ * Last-Updated: Mon Oct 31 22:20:00 2016
+ *           By: Srikanth Kanuri (srkanuri)
  *     Update #: 0
  * Keywords: 
  * Compatibility: 
@@ -47,9 +47,9 @@
 #define PADDLE_THICKNESS 3
 #define BALL_DIM 3
 #define EVENT_LOOP_TIME 20
-#define XAXIS 0
-#define YAXIS 41
-#define ZAXIS 81
+#define XAXIS 35
+#define YAXIS 65
+#define ZAXIS 95
 
 rect_t left_paddle;
 rect_t right_paddle;
@@ -57,6 +57,64 @@ rect_t ball;
 
 int ball_vx = 1;
 int ball_vy = 2;
+int fsize = 0;
+int pmode = 0;
+int cur_ptr = 0;
+char *fc;
+
+void drawBarPos(int x,int y,int color){
+  int factor = pmode?5:6;
+  drawRect(x,65-y/factor,30,y/factor,color);
+}
+
+void drawBarNeg(int x,int y,int color){
+  int factor = pmode?5:6;
+  drawRect(x,65,30,y/factor,color);
+}
+
+void plotValues(float data[]){
+  fillScreen(BLACK);
+  char str[40];
+  sprintf(str,"X:%.1f,Y:%.1f,Z:%.1f",data[0],data[1],data[2]);
+  if(data[0]<0)
+    drawBarNeg(XAXIS,abs((int)data[0]),RED);
+  else
+    drawBarPos(XAXIS,(int)data[0],RED);
+
+  if(data[1]<0)
+    drawBarNeg(YAXIS,abs((int)data[1]),GREEN);
+  else
+    drawBarPos(YAXIS,(int)data[1],GREEN);
+  
+  if(data[2]<0)
+    drawBarNeg(ZAXIS,abs((int)data[2]),BLUE);
+  else
+    drawBarPos(ZAXIS,(int)data[2],BLUE);
+  if(!pmode)
+    drawString(0,0,str,RED,BLACK);
+}
+
+void drawGyro(){
+  char coords[20];
+  int axis,i;
+  float vals[3];
+  for(i=0,axis=0;(*fc != '\n') && (cur_ptr <= fsize); fc++,cur_ptr++){
+    if(*fc == ','){
+      coords[i] = '\0';
+      //printf("Axis %d is %s\n",axis, coords);
+      vals[axis] = atof(coords);
+      axis++;
+      i = 0;
+    }else{
+      coords[i]=*fc;
+      i++;
+    }
+  }
+  fc++;coords[i]='\0';vals[axis] = atof(coords);
+  if(axis == 2){
+    plotValues(vals);
+  }
+}
 
 /*The event loop that handles the key input*/
 void event_loop(void) {
@@ -94,6 +152,9 @@ void event_loop(void) {
     case SDLK_a:
       paddle_left_move = -PADDLE_MOVE_INCREMENT; 
       break;
+    case SDLK_n:
+      drawGyro();Delay(1000);
+      break;
     case SDLK_z:
       paddle_left_move = PADDLE_MOVE_INCREMENT; 
       break;
@@ -117,8 +178,6 @@ void event_loop(void) {
 /*Where the collisions are handled*/
 void pong_game(void) {
   int collision;
-
-  drawString(40,60,"hit q to quit",WHITE,BLACK);
   redrawRect(&left_paddle);
   redrawRect(&right_paddle);
   event_loop();
@@ -140,63 +199,40 @@ void pong_game(void) {
   }
 }
 
-void drawBarPos(int x,int y,int color){
-  uint16_t buf[ST7735_width];
-  int i = ST7735_height/2,j;
-  for(;i>ST7735_height/2-y/4 ;i--){
-    for(j=x;j<x+40;j++)
-      buf[j] = color;
-  //f3d_lcd_drawPixel(j, i,color);
-    ST7735_pushColor(buf,ST7735_width);
-  }
-}
-
-void drawBarNeg(int x,int y,int color){
-  uint16_t buf[ST7735_width];
-  int i = ST7735_height/2,j;
-  for(;i< ST7735_height/2+y/4 ;i++){
-    for(j=x;j<x+40;j++)
-      buf[j] = color;
-  //f3d_lcd_drawPixel(j, i,color);
-    ST7735_pushColor(buf,ST7735_width);
-  }
-}
-
-void plotValues(float data[]){
-  fillScreen(RED);
-  char str[40];
-  sprintf(str, "X:%.1f,Y:%.1f,Z:%.1f",data[0],data[1],data[2]);
-  if(data[0]<0)
-    drawBarNeg(XAXIS,abs((int)data[0]),BLACK);
-  else
-    drawBarPos(XAXIS,(int)data[0],BLACK);
-  
-  if(data[1]<0)
-    drawBarNeg(YAXIS,abs((int)data[1]),GREEN);
-  else
-    drawBarPos(YAXIS,(int)data[1],GREEN);
-  
-  if(data[2]<0)
-    drawBarNeg(ZAXIS,abs((int)data[2]),BLUE);
-  else
-    drawBarPos(ZAXIS,(int)data[2],BLUE);
-  
-    drawString(0,0,str,WHITE,RED);
-}
-
 /*Where the pong_game() is called the rectangels are initialized. */
 int c335_main( int argc, char *argv[] ) {
-
-  fillScreen(RED);
-  //initRect(&left_paddle,0,ST7735_height/2-(PADDLE_HEIGHT/2),PADDLE_THICKNESS,PADDLE_HEIGHT,WHITE);
-  //initRect(&right_paddle,ST7735_width-PADDLE_THICKNESS,ST7735_height/2-(PADDLE_HEIGHT/2),PADDLE_THICKNESS,PADDLE_HEIGHT,WHITE);
-  //initRect(&ball,ST7735_width/2-(BALL_DIM/2),ST7735_height/2-(BALL_DIM/2),BALL_DIM,BALL_DIM,WHITE);
-  SDL_Event event;
+  int i = 0;
+  char *mode;
+  if(argc == 3){
+    mode = argv[1];
+    if (!strcmp(mode, "LANDSCAPE") || !strcmp(mode, "PORTRAIT")){
+      if(!strcmp(mode, "LANDSCAPE"))
+	pmode = 1;
+      else
+	pmode = 0;
+      FILE *fp = fopen(argv[2], "r");
+      fseek (fp, 0, SEEK_END);
+      fsize = ftell(fp);
+      fseek (fp, 0, SEEK_SET);
+      fc = malloc(fsize);
+      if(fc){
+	fread(fc, 1, fsize, fp);
+      }
+      fclose(fp);
+    }
+    else{
+      printf("The 1st argument should be the following :\n1. LANDSCAPE\n2. PORTRAIT\n");
+      exit(1);
+    }
+  }
+  fillScreen(BLACK);
+  initRect(&left_paddle,0,ST7735_height/2-(PADDLE_HEIGHT/2),PADDLE_THICKNESS,PADDLE_HEIGHT,WHITE);
+  initRect(&right_paddle,ST7735_width-PADDLE_THICKNESS,ST7735_height/2-(PADDLE_HEIGHT/2),PADDLE_THICKNESS,PADDLE_HEIGHT,WHITE);
+  initRect(&ball,ST7735_width/2-(BALL_DIM/2),ST7735_height/2-(BALL_DIM/2),BALL_DIM,BALL_DIM,WHITE);
+  if(!pmode)
+    drawString(40,60,"hit q to quit",WHITE,BLACK);
   while (1) {
-    //pong_game();
-    SDL_PollEvent(&event);
-    if(event.type == SDLK_q)
-      exit(0);
+    pong_game();
     Delay(EVENT_LOOP_TIME);
   }
 } 
