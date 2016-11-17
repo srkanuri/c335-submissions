@@ -5,9 +5,9 @@
   .type pop, %function
 pop:
 	push	{lr}
-	bl	  empty
-	cmp	  r0, #0
-	beq	 .remove
+	bl	empty
+	cmp	r0, #0
+	beq	.remove
 	mov	r0, #1
 	bl	throw_error
 	b	.end
